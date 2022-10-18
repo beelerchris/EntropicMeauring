@@ -20,4 +20,4 @@ dist = dist1.sum(axis=0) / data.shape[0]
 dist0 /= dist0.sum(axis=0)
 dist1 /= dist1.sum(axis=0)
 
-np.savez('pixel_dist.npz', dist=dist, dist0=dist0, dist1=dist1)
+np.savez('init_pixel_dist.npz', dist=dist, dist0=dist0, dist1=dist1)
