@@ -51,8 +51,9 @@ while count.max() < 0.95:
 
     print("Measurement: %d\nClassification: %d\nConfidence: %.4f\n" % (i, count.argmax(), count.max()))
 
-    _plot_fig, _plot_axs = plt.subplots(2, 7, figsize=(36, 8))
+    _plot_fig, _plot_axs = plt.subplots(2, 7, figsize=(36, 10))
     _plot_lines = []
+    _plot_axs[0, 0].set_title("Measurement")
     plot_state = ((state[1] + 0.5) - state[0] * 0.5)
     mappable = _plot_axs[0, 0].pcolormesh(plot_state[::-1], vmin=0, vmax=1, cmap='gray')
     _plot_axs[0, 0].set_xticks([])
@@ -60,28 +61,36 @@ while count.max() < 0.95:
     _plot_axs[0, 0].set_xlim([0, state.shape[1]])
     _plot_axs[0, 0].set_ylim([0, state.shape[2]])
 
+    _plot_axs[0, 0].set_title("True Sample")
     mappable = _plot_axs[0, 1].pcolormesh(sample[::-1], vmin=0, vmax=1, cmap='gray')
     _plot_axs[0, 1].set_xticks([])
     _plot_axs[0, 1].set_yticks([])
     _plot_axs[0, 1].set_xlim([0, sample.shape[0]])
     _plot_axs[0, 1].set_ylim([0, sample.shape[1]])
 
-    mappable = _plot_axs[1, 0].pcolormesh(H[::-1], vmin=0, vmax=H.max(), cmap='summer')
+    _plot_axs[0, 0].set_title("Avergae Class Entropy")
+    try:
+        H_min = H[np.where(H > 1e-6)].min()
+    except ValueError:
+        H_min = H.min()
+    mappable = _plot_axs[1, 0].pcolormesh(H[::-1], vmin=H_min, vmax=H.max(), cmap='summer')
     _plot_axs[1, 0].set_xticks([])
     _plot_axs[1, 0].set_yticks([])
     _plot_axs[1, 0].set_xlim([0, H.shape[0]])
     _plot_axs[1, 0].set_ylim([0, H.shape[1]])
 
+    _plot_axs[0, 0].set_title("Confidence of Classes")
     _plot_axs[1, 1].bar(np.arange(0, all_labels.max()+1, 1, dtype=np.int32), count)
     _plot_axs[1, 1].set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     _plot_axs[1, 1].set_ylim([0, 1])
 
     for j in range(10):
-        mappable = _plot_axs[j//5, 2+(j%5)].pcolormesh(dist1[j, ::-1], vmin=0, vmax=1, cmap='gray')
-        _plot_axs[0, 0].set_xticks([])
-        _plot_axs[0, 0].set_yticks([])
-        _plot_axs[0, 0].set_xlim([0, dist1.shape[1]])
-        _plot_axs[0, 0].set_ylim([0, dist1.shape[2]])
+        _plot_axs[j//5, 2+(j%5)].set_title("Distribution of %d" % (j))
+        mappable = _plot_axs[j//5, 2+(j%5)].pcolormesh(dist1[j, ::-1], vmin=0, vmax=1, cmap='summer')
+        _plot_axs[j//5, 2+(j%5)].set_xticks([])
+        _plot_axs[j//5, 2+(j%5)].set_yticks([])
+        _plot_axs[j//5, 2+(j%5)].set_xlim([0, dist1.shape[1]])
+        _plot_axs[j//5, 2+(j%5)].set_ylim([0, dist1.shape[2]])
 
     plt.savefig('./dist_im/EntMeas_ex_%.2d.png' % (i))
     plt.close()
@@ -93,11 +102,12 @@ masked_inds = np.all(((all_data * state[0]) == state[1]) == True, axis=(1, 2))
 data = all_data[masked_inds]
 labels = all_labels[masked_inds]
 
-H, count = entropy_calc(data, labels, all_labels.max()+1)
+H, dist1, count = entropy_calc(data, labels, all_labels.max()+1)
 print("Measurement: %d\nClassification: %d\nConfidence: %.4f" % (i+1, count.argmax(), count.max()))
 
-_plot_fig, _plot_axs = plt.subplots(2, 7, figsize=(36, 8))
+_plot_fig, _plot_axs = plt.subplots(2, 7, figsize=(36, 10))
 _plot_lines = []
+_plot_axs[0, 0].set_title("Measurement")
 plot_state = ((state[1] + 0.5) - state[0] * 0.5)
 mappable = _plot_axs[0, 0].pcolormesh(plot_state[::-1], vmin=0, vmax=1, cmap='gray')
 _plot_axs[0, 0].set_xticks([])
@@ -105,28 +115,36 @@ _plot_axs[0, 0].set_yticks([])
 _plot_axs[0, 0].set_xlim([0, state.shape[1]])
 _plot_axs[0, 0].set_ylim([0, state.shape[2]])
 
+_plot_axs[0, 0].set_title("True Sample")
 mappable = _plot_axs[0, 1].pcolormesh(sample[::-1], vmin=0, vmax=1, cmap='gray')
 _plot_axs[0, 1].set_xticks([])
 _plot_axs[0, 1].set_yticks([])
 _plot_axs[0, 1].set_xlim([0, sample.shape[0]])
 _plot_axs[0, 1].set_ylim([0, sample.shape[1]])
 
-mappable = _plot_axs[1, 0].pcolormesh(H[::-1], vmin=0, vmax=H.max(), cmap='summer')
+_plot_axs[0, 0].set_title("Avergae Class Entropy")
+try:
+    H_min = H[np.where(H > 1e-6)].min()
+except ValueError:
+    H_min = H.min()
+mappable = _plot_axs[1, 0].pcolormesh(H[::-1], vmin=H_min, vmax=H.max(), cmap='summer')
 _plot_axs[1, 0].set_xticks([])
 _plot_axs[1, 0].set_yticks([])
 _plot_axs[1, 0].set_xlim([0, H.shape[0]])
 _plot_axs[1, 0].set_ylim([0, H.shape[1]])
 
+_plot_axs[0, 0].set_title("Confidence of Classes")
 _plot_axs[1, 1].bar(np.arange(0, all_labels.max()+1, 1, dtype=np.int32), count)
 _plot_axs[1, 1].set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 _plot_axs[1, 1].set_ylim([0, 1])
 
 for j in range(10):
-    mappable = _plot_axs[j//5, 2+(j%5)].pcolormesh(dist1[j, ::-1], vmin=0, vmax=1, cmap='gray')
-    _plot_axs[0, 0].set_xticks([])
-    _plot_axs[0, 0].set_yticks([])
-    _plot_axs[0, 0].set_xlim([0, dist1.shape[1]])
-    _plot_axs[0, 0].set_ylim([0, dist1.shape[2]])
+    _plot_axs[j//5, 2+(j%5)].set_title("Distribution of %d" % (j))
+    mappable = _plot_axs[j//5, 2+(j%5)].pcolormesh(dist1[j, ::-1], vmin=0, vmax=1, cmap='summer')
+    _plot_axs[j//5, 2+(j%5)].set_xticks([])
+    _plot_axs[j//5, 2+(j%5)].set_yticks([])
+    _plot_axs[j//5, 2+(j%5)].set_xlim([0, dist1.shape[1]])
+    _plot_axs[j//5, 2+(j%5)].set_ylim([0, dist1.shape[2]])
 
-plt.savefig('./dist_im/EntMeas_ex_%.2d.png' % (i))
+plt.savefig('./dist_im/EntMeas_ex_%.2d.png' % (i+1))
 plt.close()
