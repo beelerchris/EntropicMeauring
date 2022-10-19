@@ -61,14 +61,14 @@ while count.max() < 0.95:
     _plot_axs[0, 0].set_xlim([0, state.shape[1]])
     _plot_axs[0, 0].set_ylim([0, state.shape[2]])
 
-    _plot_axs[0, 0].set_title("True Sample")
+    _plot_axs[0, 1].set_title("True Sample")
     mappable = _plot_axs[0, 1].pcolormesh(sample[::-1], vmin=0, vmax=1, cmap='gray')
     _plot_axs[0, 1].set_xticks([])
     _plot_axs[0, 1].set_yticks([])
     _plot_axs[0, 1].set_xlim([0, sample.shape[0]])
     _plot_axs[0, 1].set_ylim([0, sample.shape[1]])
 
-    _plot_axs[0, 0].set_title("Avergae Class Entropy")
+    _plot_axs[1, 0].set_title("Avergae Class Entropy")
     try:
         H_min = H[np.where(H > 1e-6)].min()
     except ValueError:
@@ -79,7 +79,7 @@ while count.max() < 0.95:
     _plot_axs[1, 0].set_xlim([0, H.shape[0]])
     _plot_axs[1, 0].set_ylim([0, H.shape[1]])
 
-    _plot_axs[0, 0].set_title("Confidence of Classes")
+    _plot_axs[1, 1].set_title("Confidence of Classes")
     _plot_axs[1, 1].bar(np.arange(0, all_labels.max()+1, 1, dtype=np.int32), count)
     _plot_axs[1, 1].set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     _plot_axs[1, 1].set_ylim([0, 1])
