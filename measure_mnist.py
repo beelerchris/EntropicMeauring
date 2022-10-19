@@ -85,7 +85,7 @@ while count.max() < 0.95:
     _plot_axs[1, 1].set_ylim([0, 1])
 
     for j in range(10):
-        _plot_axs[j//5, 2+(j%5)].set_title("Distribution of %d" % (j))
+        _plot_axs[j//5, 2+(j%5)].set_title("Distribution of Ones in Class %d" % (j))
         mappable = _plot_axs[j//5, 2+(j%5)].pcolormesh(dist1[j, ::-1], vmin=0, vmax=1, cmap='summer')
         _plot_axs[j//5, 2+(j%5)].set_xticks([])
         _plot_axs[j//5, 2+(j%5)].set_yticks([])
@@ -139,7 +139,7 @@ _plot_axs[1, 1].set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 _plot_axs[1, 1].set_ylim([0, 1])
 
 for j in range(10):
-    _plot_axs[j//5, 2+(j%5)].set_title("Distribution of %d" % (j))
+    _plot_axs[j//5, 2+(j%5)].set_title("Distribution of Ones in Class %d" % (j))
     mappable = _plot_axs[j//5, 2+(j%5)].pcolormesh(dist1[j, ::-1], vmin=0, vmax=1, cmap='summer')
     _plot_axs[j//5, 2+(j%5)].set_xticks([])
     _plot_axs[j//5, 2+(j%5)].set_yticks([])
