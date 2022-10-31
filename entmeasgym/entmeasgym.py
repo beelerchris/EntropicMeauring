@@ -3,7 +3,7 @@ from keras.datasets import mnist
 import gym
 from copy import deepcopy
 
-class SubWorldEnv(gym.Env):
+class EntMeasEnv(gym.Env):
     def __init__(self, init_p_min=0, init_p_max=None):
 
         (train_x, train_y), (test_x, test_labels) = mnist.load_data()
